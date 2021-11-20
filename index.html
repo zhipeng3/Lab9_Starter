@@ -87,21 +87,114 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "4a7201e6b5134cafb250fbabf954919d"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
+  <script>
+
+    class MyError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "MyError";
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
       let output = document.querySelector('output');
+      let operator = document.querySelector('#operator').value;
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try{
+        if(isNaN(firstNum)){
+          throw new MyError("first number is wrong");
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch(err){
+        if (err instanceof MyError) {
+          console.warn("My Error: " + err.message);
+        }
+        else{
+          console.warn(err);
+        }
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    //let buttons = document.querySelector('#error-btns');
+    //buttons = buttons.children;
+    errorBtns[0].addEventListener('click', e => {
+      console.log("This is console log function");
+    });
+    errorBtns[1].addEventListener('click', e => {
+      console.error("This is console error function");
+    });
+    errorBtns[2].addEventListener('click', e => {
+      console.count("count");
+    });
+    errorBtns[3].addEventListener('click', e => {
+      console.warn("This is console warn function");
+    });
+    errorBtns[4].addEventListener('click', e => {
+      console.log("1<2");
+      console.assert(1<2);
+      console.log("1>2");
+      console.assert(1>2);
+    });
+    errorBtns[5].addEventListener('click', e => {
+      console.clear();
+    });
+    errorBtns[6].addEventListener('click', e => {
+      console.dir(errorBtns[6]);
+    });
+    errorBtns[7].addEventListener('click', e => {
+      console.dirxml(errorBtns[7]);
+    });
+    errorBtns[8].addEventListener('click', e => {
+      console.group("mylable");
+    });
+    errorBtns[9].addEventListener('click', e => {
+      console.groupEnd("mylable");
+    });
+    errorBtns[10].addEventListener('click', e => {
+      console.table(["you", "me", "him"]);
+    });
+    errorBtns[11].addEventListener('click', e => {
+      console.time(["mylable2"]);
+    });
+    errorBtns[12].addEventListener('click', e => {
+      console.timeEnd(["mylable2"]);
+    });
+    errorBtns[13].addEventListener('click', e => {
+      function first(){
+        second();
+      }
+      function second(){
+        console.trace();
+      }
+      first();
+    });
+    errorBtns[14].addEventListener('click', e => {
+      alidkfhjvb();
+    });
+
+    window.onerror = function(msg, url, line){
+      console.log("onerror,");
+      console.log(msg);
+      console.log(url);
+      console.log(line);
+    }
+
   </script>
 </body>
 
